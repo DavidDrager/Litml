@@ -1,0 +1,98 @@
+  :root {
+    --litml-indent-pad-default: 3em;
+    --litml-tab-pad-default: 2em;
+}
+
+litml-line{
+    --litml-indent-pad: calc(var(--litml-indent-padding, var(--litml-indent-pad-default)));
+    --litml-tab-pad-line: calc(var(--litml-tab-padding, var(--litml-tab-pad-default)));
+}
+
+
+
+litml-line[litml-indents="0"]{
+    --litml-indents-num-line: 0;
+}
+litml-line[litml-indents="1"]{
+    --litml-indents-num-line: 1;
+}
+litml-line[litml-indents="2"]{
+    --litml-indents-num-line: 2;
+}
+litml-line[litml-indents="3"]{
+    --litml-indents-num-line: 3;
+}
+litml-line[litml-indents="4"]{
+    --litml-indents-num-line: 4;
+}
+litml-line[litml-indents="5"]{
+    --litml-indents-num-line: 5;
+}
+
+
+/*  
+litml-line[litml-indents="5"]{
+    --litml-indents-num-line: calc( 5 * var(--litml-indent-pad) );
+}
+  */
+
+litml-line[litml-line-type="center"] {
+    --litml-tab-pad: 0em;
+    --litml-line-pad: 0em;
+    text-align: center;
+}
+
+litml-line[litml-line-type="right"] { 
+    --litml-tab-pad: 0em;
+    --litml-line-pad: 0em;
+    text-align: right;
+}
+
+litml-line[litml-line-type="noindent"] { 
+    --litml-tab-pad: 0em;
+    --litml-line-pad: 0em;
+    text-align: left;
+}
+
+litml-line[litml-line-type="tab"] { 
+    --litml-tab-pad: calc(var(--litml-tab-pad-line)); 
+    --litml-line-pad: calc(var(--litml-indents-num-line,var(--litml-indents-num-stanza,0)) * var(--litml-indent-pad));
+    text-align: left;
+}
+
+litml-line[litml-line-type="hanging"] {
+    --litml-tab-pad: calc( 0em - var(--litml-tab-pad-line)); 
+    --litml-line-pad: calc(var(--litml-indents-num-line,var(--litml-indents-num-stanza,0)) * var(--litml-indent-pad) + var(--litml-tab-pad-line) );
+    text-align: left;
+}
+
+
+litml-line:not([litml-line-type]) {
+    text-align: var(--litml-text-align-stanza, left);
+    --litml-tab-pad: calc( 0em + var(--litml-tabs-num-stanza,0) * var(--litml-tab-pad-line)); 
+    --litml-line-pad: calc(var(--litml-indents-num-stanza,0) * var(--litml-indent-pad) + var( --litml-indents-num-line, var(--litml-tabs-num-stanza,0)) * var(--litml-tab-pad-line) * -1);
+}
+
+
+
+/*
+litml-line[litml-line-type="tab"],
+litml-stanza[litml-line-type="tab"] litml-line:not([litml-line-type]) { 
+    --litml-tab-pad: calc(var(--litml-tab-pad-total)); 
+    --litml-line-pad: calc(var(--litml-indent-pad-total)),
+    text-align: left;
+}
+
+litml-line[litml-line-type="hanging"],
+litml-line:not([litml-line-type]) {
+    --litml-tab-pad: calc( 0em - var(--litml-tab-pad-total));
+    --litml-line-pad: calc(var(--litml-tab-pad-total) + var(--litml-indent-pad-total));
+    text-align: left;
+} */
+
+litml-line{
+    padding-left: calc(var(--litml-line-pad));
+    padding-right: 0em;
+    text-indent: var(--litml-tab-pad);
+    display: block;
+}
