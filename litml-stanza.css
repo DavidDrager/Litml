@@ -1,6 +1,6 @@
 litml-stanza {
-    --litml-indents-num-stanza: 0;
-    --litml-text-align-stanza: left;
+ /*   --litml-indents-num-stanza: 0;
+    --litml-text-align-stanza: left; */
     display: block;
 }
 

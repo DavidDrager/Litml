@@ -8,9 +8,9 @@
 
         template.innerHTML =
             '   <style> ' +
-            ':host { display: block; ' +
-            ' --litml-indents-num-stanza: 0;' + 
-            ' --litml-text-align-stanza: left;}' +
+            ':host { display: block; }' +
+            // ' --litml-indents-num-stanza: 0;' + 
+            // ' --litml-text-align-stanza: left;}' +
             ':host([hidden]) {  display: none;  } ' + 
             ':host([litml-line-type="center"]) {  --litml-indents-num-stanza: 0; --litml-tabs-num-stanza: 0;  --litml-text-align-stanza: center; }' +
             ':host([litml-line-type="right"]) {  --litml-indents-num-stanza: 0; --litml-tabs-num-stanza: 0;  --litml-text-align-stanza: right; }' +
