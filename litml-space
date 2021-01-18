@@ -1,0 +1,36 @@
+(
+    /**
+    * Function that when executed creates a HTML Custom Element that represents an empty space in the middle of a line of poetry or song
+    */
+    function () {
+
+        const template = document.createElement('template');
+
+        template.innerHTML =
+            '   <style> ' +
+            ':host { display: inline; }' +
+            ':host([hidden]) {  display: none;  } ' + 
+            '</style>&nbsp;<slot></slot>';
+
+        /**
+         * Class representing a stanza of poetry or a verse or chorus of song
+         * @extends HTMLElement
+         */
+        class Space extends HTMLElement {
+
+            static get observedAttributes() {
+                return [ 'litml-space-size'];
+            }
+
+            constructor() {
+                super();
+                this.attachShadow({ mode: 'open' });
+                this.shadowRoot.appendChild(template.content.cloneNode(true));
+                this._slot = this.shadowRoot.querySelector('slot');
+            }
+
+        }
+        window.customElements.define('litml-space', Space);
+
+    }
+)();

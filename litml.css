@@ -10,3 +10,24 @@ litml-line {
 /*    --litml-indent-padding: 3em;
     --litml-tab-padding: 2em;  */
 }
+
+litml-space[litml-space-size="small"] { 
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+litml-space,
+litml-space[litml-space-size="medium"] { 
+    margin-left: 1.75em;
+    margin-right:  1.75em;
+}
+
+litml-space[litml-space-size="large"] { 
+    margin-left: 3em;
+    margin-right:  3em;
+}
+
+litml-space[litml-space-size="huge"] { 
+    margin-left: 4.5em;
+    margin-right: 4.5em;
+}
