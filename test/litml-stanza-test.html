@@ -6,6 +6,8 @@
 <!-- <link rel="stylesheet" type="text/css"  href="../litml-line.css" /> -->
 <script src= '../litml-stanza.js'></script>
 <script src= '../litml-line.js'></script>
+<script src= '../litml-space'></script>
+<script src= '../litml-seperator.js'></script>
 
 <litml-stanza>
     <litml-line litml-line-type="hanging" litml-indents="0">This is a hanging line inside a stanza that has no <litml-space litml-space-size="small"/>line type. Line has a indent of 0.</litml-line>
@@ -16,16 +18,16 @@
 <litml-line litml-line-type="noindnet">This is a noindent line on a stanza <litml-space litml-space-size="huge"/>without a line type.</litml-line>
 </litml-stanza>
 <litml-stanza litml-line-type="hanging">
-    <litml-line litml-line-type="tab">This is a tabbed line without indents on a hanging stanza.</litml-line>
-    <litml-line>This is a unspecified line type on a hangins stanza. Lets see how it does.</litml-line>
+    <litml-line litml-line-type="tab">This is a tabbed line without<litml-seperator litml-seperator-type="em" litml-seperator-spacing="right" />indents on a hanging stanza.</litml-line>
+    <litml-line>This is a unspecified line type on a hangins stanza. Lets see<litml-seperator litml-seperator-type="..." litml-seperator-spacing="none" />how it does.</litml-line>
 </litml-stanza>
 <litml-stanza litml-line-type="tab">
-    <litml-line litml-line-type="tab" litml-indents="1">This is a tabbed line with 1 indent on a tab stanza.</litml-line>
-    <litml-line litml-indents="2">This is a unspecified line type with 2 indents on a tab stanza. Lets see how it does.</litml-line>
+    <litml-line litml-line-type="tab" litml-indents="1">This is a tabbed line with 1 indent<litml-seperator litml-seperator-type="||" litml-seperator-spacing="both" />on a tab stanza.</litml-line>
+    <litml-line litml-indents="2">This is a unspecified line type with 2 indents on a tab stanza. Lets<litml-seperator litml-seperator-type="|" litml-seperator-spacing="left" />see how it does.</litml-line>
 </litml-stanza>
 <litml-stanza litml-line-type="right">
-    <litml-line>This is a unspecified line type on a right justified stanza.</litml-line>
-    <litml-line litml-line-type="right">This is a right line type on a right justified stanza.</litml-line>
+    <litml-line>This is a unspecified line type on a right<litml-seperator litml-seperator-type="//" litml-seperator-spacing="both" />justified stanza.</litml-line>
+    <litml-line litml-line-type="right">This is a right line type on a right<litml-seperator litml-seperator-type="/" litml-seperator-spacing="right" />justified stanza.</litml-line>
     <litml-line litml-line-type="center">This is a centered line type on a right justified stanza.</litml-line>
     <litml-line litml-line-type="noindent">This is a noindent line type on a right justified stanza.</litml-line>   
 </litml-stanza>
