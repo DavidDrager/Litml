@@ -1,6 +1,6 @@
 (
     /**
-    * Function that when executed creates a HTML Custom Element that represents an seperator character(s) in a line of poetry or song
+    * Function that when executed creates a HTML Custom Element that represents an separator character(s) in a line of poetry or song
     */
     function () {
 
@@ -13,10 +13,10 @@
          * Class representing a stanza of poetry or a verse or chorus of song
          * @extends HTMLElement
          */
-        class Seperator extends HTMLElement {
+        class separator extends HTMLElement {
 
             static get observedAttributes() {
-                return [ 'litml-seperator-type', 'litml-seperator-spacing'];
+                return [ 'litml-separator-type', 'litml-separator-spacing'];
             }
 
             constructor() {
@@ -26,69 +26,69 @@
                 this._slot = this.shadowRoot.querySelector('slot');
             }
 
-            generateSeperator() {
-                var seperatorTextA = null;
-                var seperatorSpacing = null;    
-                var seperatorText = "";
+            generateseparator() {
+                var separatorTextA = null;
+                var separatorSpacing = null;    
+                var separatorText = "";
                 var spanNode;
 
-                seperatorTextA = this.getAttribute("litml-seperator-type");
-                seperatorSpacing = this.getAttribute("litml-seperator-spacing"); 
+                separatorTextA = this.getAttribute("litml-separator-type");
+                separatorSpacing = this.getAttribute("litml-separator-spacing"); 
 
-                switch (seperatorTextA) {
+                switch (separatorTextA) {
                     case "em":
-                        seperatorText = "&#8212;";
+                        separatorText = "&#8212;";
                         break;
                     case "/":
-                        seperatorText = "&#47;";
+                        separatorText = "&#47;";
                         break;
                     case "//":
-                        seperatorText = "&#47;&#47;";
+                        separatorText = "&#47;&#47;";
                         break;
                     case "|":
-                        seperatorText = "&#124;";
+                        separatorText = "&#124;";
                         break;
                     case "||":
-                        seperatorText = "&#124;&#124;";
+                        separatorText = "&#124;&#124;";
                         break;    
                     case "...":
-                        seperatorText = "&#8230;"
+                        separatorText = "&#8230;"
                         break;                 
                 }
-                seperatorText = this.addSpaces(seperatorText,seperatorSpacing);               
+                separatorText = this.addSpaces(separatorText,separatorSpacing);               
                 spanNode = this.shadowRoot.querySelector("span");
-                spanNode.innerHTML = seperatorText;
+                spanNode.innerHTML = separatorText;
             }
 
 
-            addSpaces(seperatorText,seperatorSpacing) {
+            addSpaces(separatorText,separatorSpacing) {
                 var authorHObj;
                 var titleHObj;
                 var headerObj;
 
-                switch (seperatorSpacing) {
+                switch (separatorSpacing) {
                     case "left":
-                        return "&nbsp;" + seperatorText;
+                        return "&nbsp;" + separatorText;
                         break;
                     case "right":
-                        return seperatorText + "&nbsp;";
+                        return separatorText + "&nbsp;";
                         break;
                     case "both":
-                        return "&nbsp;" + seperatorText +  "&nbsp;"; 
+                        return "&nbsp;" + separatorText +  "&nbsp;"; 
                         break;
                     default:
-                        return seperatorText;
+                        return separatorText;
                 }
             }
 
             connectedCallback() {
                 if (this.isConnected) {
-                    this.generateSeperator();
+                    this.generateseparator();
                 }
             }
 
         }
-        window.customElements.define('litml-seperator', Seperator);
+        window.customElements.define('litml-separator', separator);
 
     }
 )();
