@@ -44,20 +44,23 @@
                 var title = null;    
                 var articleNode;
                 var workType;
+                var subtitle;
 
                 authorName = this.getAttribute("litml-author");
                 title = this.getAttribute("litml-title"); 
                 workType = this.getAttribute("litml-work-type"); 
+                subtitle = this.getAttribute('litml-subtitle')
                 articleNode = this.shadowRoot.querySelector('article');
                 
-                this.generateHeader(authorName,title,articleNode);
-                this.generateJsonLd(authorName,title,articleNode,workType);
+                this.generateHeader(authorName,title,subtitle,articleNode);
+                this.generateJsonLd(authorName,title,subtitle,articleNode,workType);
             }
 
 
-            generateHeader(author,name,article) {
+            generateHeader(author,name,subtitle,article) {
                 var authorHObj;
                 var titleHObj;
+                var subtitleHObj;
                 var headerObj;
 
                 if (author || name) {
@@ -67,6 +70,12 @@
                         titleHObj = document.createElement("h1");
                         titleHObj.innerText = name;
                         headerObj.appendChild(titleHObj);
+                    }
+
+                    if (subtitle) {
+                        subtitleHObj = document.createElement("h3");
+                        subtitleHObj.innerText = subtitle;
+                        headerObj.appendChild(subtitleHObj);                       
                     }
 
                     if (author) {
@@ -79,7 +88,7 @@
                 }
             }
 
-            generateJsonLd(author,name,article,workType) {
+            generateJsonLd(author,name,subtitle,article,workType) {
                 var jsonLDTxt;
                 var scriptNode;
 
@@ -97,6 +106,10 @@
                 
                 if (name) {
                     jsonLDTxt = jsonLDTxt + ', "name": "' + name + '"';
+                }      
+                    
+                if (subtitle) {
+                    jsonLDTxt = jsonLDTxt + ', "alternativeHeadline": "' + subtitle + '"';
                 }      
                     
                 if (author) {
