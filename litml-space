@@ -1,36 +1,40 @@
-(
-    /**
-    * Function that when executed creates a HTML Custom Element that represents an empty space in the middle of a line of poetry or song
+/**
+    * Class representing a white space in the middle of a line of poetry or a song
+    * @extends HTMLElement
     */
-    function () {
+class LitmlSpace extends HTMLElement {
 
-        const template = document.createElement('template');
+    constructor() {
+        super();
+        this.initTemplate();
+        this.attachShadow({ mode: 'open' });
+        this.shadowRoot.appendChild(this.template.content.cloneNode(true));
+        this._slot = this.shadowRoot.querySelector('slot');
+    }
 
+}
+
+LitmlSpace.prototype.isTemplateinit = false;
+
+LitmlSpace.prototype.initTemplate = function() {
+    if (! LitmlSpace.prototype.isTemplateInit) {
+        var template;
+
+        LitmlSpace.prototype.isTemplateInit = true;
+        template = document.createElement('template');
         template.innerHTML =
-            '   <style> ' +
+           '   <style> ' +
             ':host { display: inline; }' +
             ':host([hidden]) {  display: none;  } ' + 
             '</style>&nbsp;<slot></slot>';
 
-        /**
-         * Class representing a stanza of poetry or a verse or chorus of song
-         * @extends HTMLElement
-         */
-        class Space extends HTMLElement {
-
-            static get observedAttributes() {
-                return [ 'litml-space-size'];
-            }
-
-            constructor() {
-                super();
-                this.attachShadow({ mode: 'open' });
-                this.shadowRoot.appendChild(template.content.cloneNode(true));
-                this._slot = this.shadowRoot.querySelector('slot');
-            }
-
-        }
-        window.customElements.define('litml-space', Space);
-
+        LitmlSpace.prototype.template = template;
     }
-)();
+};
+
+LitmlSpace.register = function() {
+    window.customElements.define('litml-space', LitmlSpace);
+};
+
+LitmlSpace.register();
+
