@@ -1,6 +1,6 @@
 
 /**
- * Class representing a stanza of poetry or a verse or chorus of song
+ * Class representing a character(s) that represent a pause in a line of poetry
  * @extends HTMLElement
  */
 class LitmlSeparator extends HTMLElement {
