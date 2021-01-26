@@ -4,11 +4,6 @@ HTMLElement
     * @extends HTMLElement
     */
 class LitmlLine extends HTMLElement {
-    // Specify observed attributes so that
-    // attributeChangedCallback will work
-    static get observedAttributes() {
-        return ['litml-indents', 'litml-line-type'];
-    }
 
     constructor() {
         super();
@@ -18,7 +13,6 @@ class LitmlLine extends HTMLElement {
         this._slot = this.shadowRoot.querySelector('slot');
         this._setting_litml_indents = false;
     }
-
 
 
     get set_indents() {

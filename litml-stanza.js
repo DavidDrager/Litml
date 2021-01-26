@@ -6,10 +6,6 @@
  */
 class LitmlStanza extends HTMLElement {
 
-    static get observedAttributes() {
-        return [ 'litml-line-type'];
-    }
-
     constructor() {
         super();
         this.initTemplate();

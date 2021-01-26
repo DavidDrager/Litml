@@ -4,10 +4,6 @@
  */
 class LitmlWork extends HTMLElement {
 
-    static get observedAttributes() {
-        return ['litml-work-type'];
-    }
-
     constructor() {
         super();
         this.initTemplate();

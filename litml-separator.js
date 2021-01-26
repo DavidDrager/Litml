@@ -5,10 +5,6 @@
  */
 class LitmlSeparator extends HTMLElement {
 
-    static get observedAttributes() {
-        return [ 'litml-separator-type', 'litml-separator-spacing'];
-    }
-
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
