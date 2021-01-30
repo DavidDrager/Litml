@@ -18,77 +18,78 @@ class LitmlWork extends HTMLElement {
         var articleNode;
         var workType;
         var subtitle;
+        var workInfo;
+        var headerHtml;
+        var jsonLd;
 
         authorName = this.getAttribute("litml-author");
         title = this.getAttribute("litml-title"); 
         workType = this.getAttribute("litml-work-type"); 
-        subtitle = this.getAttribute('litml-subtitle')
+        subtitle = this.getAttribute('litml-subtitle');
+        workInfo = { "authorName": authorName, "title": title, "subtitle": subtitle, "workType": workType };
         articleNode = this.shadowRoot.querySelector('article');
         
-        this.generateHeader(authorName,title,subtitle,articleNode);
-        this.generateJsonLd(authorName,title,subtitle,articleNode,workType);
+        headerHtml = this.generateHeader(workInfo);
+        articleNode.insertBefore(headerObj,this._slot);
+        jsonLd = this.generateJsonLd(workInfo,articleNode);
+
     }
 
 
-    generateHeader(author,name,subtitle,article) {
+    generateHeaderHtml(workInfo) {
         var authorHObj;
         var titleHObj;
         var subtitleHObj;
         var headerObj;
+        var name = workInfo.title;
+        var headerHtml = ""
 
-        if (author || name) {
-            headerObj = document.createElement('header');
+        if ( workInfo.author || name) {
+            headerHtml = "<header>"
 
             if (name) {
-                titleHObj = document.createElement("h1");
-                titleHObj.innerText = name;
-                headerObj.appendChild(titleHObj);
+                headerHtml = headerHtml + "<h1>" + name + "</h1>";
             }
 
-            if (subtitle) {
-                subtitleHObj = document.createElement("h3");
-                subtitleHObj.innerText = subtitle;
-                headerObj.appendChild(subtitleHObj);                       
+            if (workInfo.subtitle) {
+                headerHtml = headerHtml + "<h3>" + name + "</h3>";
             }
 
-            if (author) {
-                authorHObj = document.createElement("h2");
-                authorHObj.innerText = author;
-                headerObj.appendChild(authorHObj);
+            if (workInfo.authorName) {
+                headerHtml = headerHtml + "<h2>" + workInfo.authorName + "</h2>";
             }
-
-            article.insertBefore(headerObj,this._slot);
+            headerHtml = headerHtml + "</header>";
         }
     }
 
-    generateJsonLd(author,name,subtitle,article,workType) {
+    generateJsonLd(workInfo,article) {
         var jsonLDTxt;
         var scriptNode;
 
         jsonLDTxt = this.jsonLDPrefix;
 
-        if (workType == 'story') {
+        if (workInfo.workType == 'story') {
             jsonLDTxt = jsonLDTxt + '"@type": "ShortStory"' ;                         
         }
         else {
             jsonLDTxt = jsonLDTxt + '  "@type": "CreativeWork"' ;
-            if (workType == 'poem' ) {
+            if (workInfo.workType == 'poem' ) {
                 jsonLDTxt = jsonLDTxt + ', "genre": "poem" ';
             }
         }
         
-        if (name) {
-            jsonLDTxt = jsonLDTxt + ', "name": "' + name + '"';
+        if (workInfo.title) {
+            jsonLDTxt = jsonLDTxt + ', "name": "' + workInfo.title + '"';
         }      
             
-        if (subtitle) {
-            jsonLDTxt = jsonLDTxt + ', "alternativeHeadline": "' + subtitle + '"';
+        if (workInfo.subtitle) {
+            jsonLDTxt = jsonLDTxt + ', "alternativeHeadline": "' + workInfo.subtitle + '"';
         }      
             
-        if (author) {
+        if (workInfo.authorName) {
             jsonLDTxt = jsonLDTxt + ', "author": {' +
             '    "@type": "Person",' +
-            '   "name": "' + author + '"' +
+            '   "name": "' + workInfo.authorName + '"' +
             '} }';
         }
 
