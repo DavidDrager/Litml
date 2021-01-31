@@ -31,3 +31,11 @@ litml-space[litml-space-size="huge"] {
     margin-left: 4.5em;
     margin-right: 4.5em;
 }
+
+h1,h2 {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+litml-line {
+    font-family: Arial, Helvetica, sans-serif;
+}

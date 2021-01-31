@@ -47,32 +47,6 @@ class LitmlWork extends HTMLElement {
     }
 
 
-/*     generateHeaderHtml(workInfo) {
-        var authorHObj;
-        var titleHObj;
-        var subtitleHObj;
-        var headerObj;
-        var name = workInfo.title;
-        var headerHtml = ""
-
-        if ( workInfo.author || name) {
-            headerHtml = "<header>"
-
-            if (name) {
-                headerHtml = headerHtml + "<h1>" + name + "</h1>";
-            }
-
-            if (workInfo.subtitle) {
-                headerHtml = headerHtml + "<h3>" + name + "</h3>";
-            }
-
-            if (workInfo.authorName) {
-                headerHtml = headerHtml + "<h2>" + workInfo.authorName + "</h2>";
-            }
-            headerHtml = headerHtml + "</header>";
-        }
-    } */
-
     generateJsonLd(workInfo,article) {
         var jsonLDTxt;
         var scriptNode;
