@@ -20,6 +20,7 @@ class LitmlWork extends HTMLElement {
         var subtitle;
         var workInfo;
         var headerHtml;
+        var headerObj;
         var jsonLd;
 
         authorName = this.getAttribute("litml-author");
@@ -29,14 +30,24 @@ class LitmlWork extends HTMLElement {
         workInfo = { "authorName": authorName, "title": title, "subtitle": subtitle, "workType": workType };
         articleNode = this.shadowRoot.querySelector('article');
         
-        headerHtml = this.generateHeader(workInfo);
-        articleNode.insertBefore(headerObj,this._slot);
-        jsonLd = this.generateJsonLd(workInfo,articleNode);
+        if (this.publisherTemplates && this.publisherTemplates.workHeader) {
+            headerHtml = this.publisherTemplates.workHeader(workInfo);
+        }
+        else {
+            headerHtml = this.generateDefaultHeaderHtml(workInfo);
+        }
 
+        if (headerHtml) {
+            headerObj = document.createElement("header");
+            headerObj.innerHTML = headerHtml;
+            articleNode.insertBefore(headerObj,this._slot);         
+        }
+
+        jsonLd = this.generateJsonLd(workInfo,articleNode);
     }
 
 
-    generateHeaderHtml(workInfo) {
+/*     generateHeaderHtml(workInfo) {
         var authorHObj;
         var titleHObj;
         var subtitleHObj;
@@ -60,7 +71,7 @@ class LitmlWork extends HTMLElement {
             }
             headerHtml = headerHtml + "</header>";
         }
-    }
+    } */
 
     generateJsonLd(workInfo,article) {
         var jsonLDTxt;
@@ -129,6 +140,34 @@ LitmlWork.prototype.initTemplate = function() {
         '<slot></slot></article>';
 
         LitmlWork.prototype.template = template;
+
+        LitmlWork.prototype.generateDefaultHeaderHtml =  function(workInfo) {
+            // var authorHObj;
+            // var titleHObj;
+            // var subtitleHObj;
+            // var headerObj;
+            var name = workInfo.title;
+            var headerHtml = ""
+    
+            if ( workInfo.author || name) {
+                // headerHtml = "<header>"
+    
+                if (name) {
+                    headerHtml = headerHtml + "<h1>" + name + "</h1>";
+                }
+    
+                if (workInfo.subtitle) {
+                    headerHtml = headerHtml + "<h3>" + workInfo.subtitle + "</h3>";
+                }
+    
+                if (workInfo.authorName) {
+                    headerHtml = headerHtml + "<h2>" + workInfo.authorName + "</h2>";
+                }
+                // headerHtml = headerHtml + "</header>";
+            }
+
+            return headerHtml;
+        }
     }
 };
 
