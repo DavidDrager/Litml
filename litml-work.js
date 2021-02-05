@@ -6,20 +6,11 @@ class LitmlWork extends HTMLElement {
 
     constructor() {
         super();
-/*         this.jsonLdNode = document.createElement('script');
-        this.jsonLdNode.setAttribute('type',"application/ld+json");
-        this.appendChild(this.jsonLdNode);
-        this.initTemplate();
-        this.attachShadow({ mode: 'open' });
-        this.shadowRoot.appendChild(this.template.content.cloneNode(true));
-        this._slot = this.shadowRoot.querySelector('article slot'); */
     }
 
     generateHeader(workInfo) {
-        var articleNode;
         var headerHtml;
         var headerObj;
-        var jsonLd;
 
         if (this.publisherTemplates && this.publisherTemplates.workHeader) {
             headerHtml = this.publisherTemplates.workHeader(workInfo);
@@ -35,6 +26,23 @@ class LitmlWork extends HTMLElement {
         }
     }
 
+    generateFooter(workInfo) {
+        var footerHtml;
+        var footerObj;
+
+        if (this.publisherTemplates && this.publisherTemplates.workFooter) {
+            footerHtml = this.publisherTemplates.workFooter(workInfo);
+        }
+        else {
+            footerHtml = this.generateDefaultFooterHtml(workInfo);
+        }
+
+        if (footerHtml) {
+            footerObj = document.createElement("footer");
+            footerObj.innerHTML = footerHtml;
+            this.appendChild(footerObj);         
+        }
+    }
 
     generateJsonLd(workInfo) {
         var jsonLDTxt;
@@ -77,12 +85,14 @@ class LitmlWork extends HTMLElement {
         var title = null;    
         var subtitle;
         var workType;
+        var copyright;
 
         authorName = this.getAttribute("litml-author");
         title = this.getAttribute("litml-title"); 
         workType = this.getAttribute("litml-work-type"); 
         subtitle = this.getAttribute('litml-subtitle');
-        this.workInfo = { "authorName": authorName, "title": title, "subtitle": subtitle, "workType": workType };
+        copyright = this.getAttribute('litml-copyright');
+        this.workInfo = { "authorName": authorName, "title": title, "subtitle": subtitle, "workType": workType, "copyright": copyright  };
         return this.workInfo;
     }
 
@@ -93,6 +103,8 @@ class LitmlWork extends HTMLElement {
         this.initTemplate();
         this.prepend(this.template.content.cloneNode(true));
         this.generateJsonLd(this.workInfo);
+
+        this.generateFooter(this.workInfo);
     }
 
 
@@ -100,17 +112,6 @@ class LitmlWork extends HTMLElement {
         if (this.isConnected) {
             this.addContent();
 
-/*             this.initTemplate();
-            this.prepend(this.template.content.cloneNode(true)); */
-            // this.attachShadow({ mode: 'open' });
-            // this.shadowRoot.appendChild(this.template.content.cloneNode(true));
-            // this._slot = this.shadowRoot.querySelector('slot');
-            
-/*             this.jsonLdNode = document.createElement('script');
-            this.jsonLdNode.setAttribute('type',"application/ld+json");
-            this.prepend(this.jsonLdNode);
-
-            this.generateHeaderAndSchema(); */
         }
     }
 }
@@ -153,16 +154,10 @@ LitmlWork.prototype.initTemplate = function() {
 };
 
 LitmlWork.prototype.generateDefaultHeaderHtml =  function(workInfo) {
-    // var authorHObj;
-    // var titleHObj;
-    // var subtitleHObj;
-    // var headerObj;
     var name = workInfo.title;
     var headerHtml = ""
 
     if ( workInfo.author || name) {
-        // headerHtml = "<header>"
-
         if (name) {
             headerHtml = headerHtml + "<h1>" + name + "</h1>";
         }
@@ -174,11 +169,22 @@ LitmlWork.prototype.generateDefaultHeaderHtml =  function(workInfo) {
         if (workInfo.authorName) {
             headerHtml = headerHtml + "<h2>" + workInfo.authorName + "</h2>";
         }
-        // headerHtml = headerHtml + "</header>";
     }
 
     return headerHtml;
 };
+
+LitmlWork.prototype.generateDefaultFooterHtml =  function(workInfo) {
+    var name = workInfo.title;
+    var footerHtml = ""
+
+    if ( workInfo.copyright) {
+        footerHtml = "<div class='litml-copyright-notice'>" + workInfo.copyright + "</div>";
+    }
+
+    return footerHtml;
+};
+
 
 LitmlWork.register = function(publisherInfo, publisherTemplates) {
     LitmlWork.prototype.publisherInfo = publisherInfo;
