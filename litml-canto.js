@@ -9,7 +9,48 @@ class LitmlCanto extends HTMLElement {
         this.initTemplate();
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(this.template.content.cloneNode(true));
-        this._slot = this.shadowRoot.querySelector('article slot');
+    }
+
+
+    buildCantoInfo() {
+        var title = null;    
+        var subtitle;
+
+        title = this.getAttribute("litml-title"); 
+        subtitle = this.getAttribute('litml-subtitle');
+        return { "title": title, "subtitle": subtitle  };
+    }
+
+    connectedCallback() {
+        if (this.isConnected) {
+            this.addContent();
+        }
+    }
+
+    addContent() {
+        var cantoInfo;
+
+        cantoInfo = this.buildCantoInfo();
+        this.generateHeader(cantoInfo);
+    }
+
+    generateHeader(cantoInfo) {
+        var headerHtml;
+        var headerObj;
+
+        if (this.publisherTemplates && this.publisherTemplates.genCantoHeader) {
+            headerHtml = this.publisherTemplates.genCantoHeader(cantoInfo);
+        }
+        else {
+            headerHtml = this.generateDefaultHeaderHtml(cantoInfo);
+        }
+
+        if (headerHtml) {
+            headerObj = document.createElement("header");
+            headerObj.setAttribute("slot","header");
+            headerObj.innerHTML = headerHtml;
+            this.appendChild(headerObj);   
+        }
     }
 
 }
@@ -30,10 +71,24 @@ LitmlCanto.prototype.initTemplate = function() {
         ':host([litml-line-type="noindent"]) {  --litml-indents-num-canto: 0; --litml-tabs-num-canto: 0;  --litml-text-align-canto: left; }' +
         ':host([litml-line-type="tab"]) {   --litml-tabs-num-canto: 1;  --litml-text-align-canto: left; }' +
         ':host([litml-line-type="hanging"]) {   --litml-tabs-num-canto: -1;  --litml-text-align-canto: left; }' +
-        '</style><slot></slot>';
+        '</style><slot name="header"></slot><slot></slot>';
 
         LitmlCanto.prototype.template = template;
     }
+};
+
+LitmlCanto.prototype.generateDefaultHeaderHtml =  function(cantoInfo) {
+    var headerHtml = ""
+
+    if ( cantoInfo.title) {
+        headerHtml = headerHtml + "<h3 class='litml-canto-title'>" + cantoInfo.title + "</h3>";
+
+        if (cantoInfo.subtitle) {
+            headerHtml = headerHtml + "<h4 class='litml-canto-subtitle'>" + cantoInfo.subtitle + "</h4>";
+        }
+    }
+
+    return headerHtml;
 };
 
 LitmlCanto.register = function(publisherInfo, publisherTemplates) {
