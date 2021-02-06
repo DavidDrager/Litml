@@ -25,11 +25,11 @@ LitmlCanto.prototype.initTemplate = function() {
         '   <style> ' +
         ':host { display: block;  }' +
         ':host([hidden]) {  display: none;  } ' +
-        ':host([litml-line-type="center"]) {  --litml-indents-num-work: 0; --litml-tabs-num-work: 0;  --litml-text-align-work: center; }' +
-        ':host([litml-line-type="right"]) {  --litml-indents-num-work: 0; --litml-tabs-num-work: 0;  --litml-text-align-work: right; }' +
-        ':host([litml-line-type="noindent"]) {  --litml-indents-num-work: 0; --litml-tabs-num-work: 0;  --litml-text-align-work: left; }' +
-        ':host([litml-line-type="tab"]) {   --litml-tabs-num-work: 1;  --litml-text-align-work: left; }' +
-        ':host([litml-line-type="hanging"]) {   --litml-tabs-num-work: -1;  --litml-text-align-work: left; }' +
+        ':host([litml-line-type="center"]) {  --litml-indents-num-canto: 0; --litml-tabs-num-canto: 0;  --litml-text-align-canto: center; }' +
+        ':host([litml-line-type="right"]) {  --litml-indents-num-canto: 0; --litml-tabs-num-canto: 0;  --litml-text-align-canto: right; }' +
+        ':host([litml-line-type="noindent"]) {  --litml-indents-num-canto: 0; --litml-tabs-num-canto: 0;  --litml-text-align-canto: left; }' +
+        ':host([litml-line-type="tab"]) {   --litml-tabs-num-canto: 1;  --litml-text-align-canto: left; }' +
+        ':host([litml-line-type="hanging"]) {   --litml-tabs-num-canto: -1;  --litml-text-align-canto: left; }' +
         '</style><slot></slot>';
 
         LitmlCanto.prototype.template = template;

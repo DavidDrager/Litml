@@ -21,8 +21,9 @@ class LitmlWork extends HTMLElement {
 
         if (headerHtml) {
             headerObj = document.createElement("header");
+            headerObj.setAttribute("slot","header");
             headerObj.innerHTML = headerHtml;
-            this.prepend(headerObj);         
+            this.appendChild(headerObj);   
         }
     }
 
@@ -39,6 +40,7 @@ class LitmlWork extends HTMLElement {
 
         if (footerHtml) {
             footerObj = document.createElement("footer");
+            footerObj.setAttribute("slot","footer");
             footerObj.innerHTML = footerHtml;
             this.appendChild(footerObj);         
         }
@@ -48,36 +50,20 @@ class LitmlWork extends HTMLElement {
         var jsonLDTxt;
         var scriptNode;
 
-        jsonLDTxt = this.jsonLDPrefix;
-
-        if (workInfo.workType == 'story') {
-            jsonLDTxt = jsonLDTxt + '"@type": "ShortStory"' ;                         
+        if (this.publisherTemplates && this.publisherTemplates.genJsonLd) {
+            jsonLDTxt = this.publisherTemplates.genJsonLd(workInfo);
         }
         else {
-            jsonLDTxt = jsonLDTxt + '  "@type": "CreativeWork"' ;
-            if (workInfo.workType == 'poem' ) {
-                jsonLDTxt = jsonLDTxt + ', "genre": "poem" ';
-            }
-        }
-        
-        if (workInfo.title) {
-            jsonLDTxt = jsonLDTxt + ', "name": "' + workInfo.title + '"';
-        }      
-            
-        if (workInfo.subtitle) {
-            jsonLDTxt = jsonLDTxt + ', "alternativeHeadline": "' + workInfo.subtitle + '"';
-        }      
-            
-        if (workInfo.authorName) {
-            jsonLDTxt = jsonLDTxt + ', "author": {' +
-            '    "@type": "Person",' +
-            '   "name": "' + workInfo.authorName + '"' +
-            '} }';
+            jsonLDTxt = this.generateDefaultJsonLd(workInfo);
         }
 
-        scriptNode = this.querySelector("script");
-        scriptNode.innerText = jsonLDTxt;
-        // this.jsonLdNode.innerText = this.jsonLdNode;
+        if (jsonLDTxt) {
+            scriptNode = document.createElement("script");
+            scriptNode.setAttribute("type","application/ld+json");
+            scriptNode.setAttribute("slot","metadata");
+            scriptNode.innerText = jsonLDTxt;
+            this.appendChild(scriptNode);            
+        }
     }
 
     buildWorkInfo() {
@@ -97,13 +83,14 @@ class LitmlWork extends HTMLElement {
     }
 
     addContent()  {
+        this.attachShadow({ mode: 'open' });
+        this.initTemplate();
+        this.shadowRoot.appendChild(this.template.content.cloneNode(true));
+        this._slot = this.shadowRoot.querySelector('slot');
+
         this.buildWorkInfo();
         this.generateHeader(this.workInfo);
-        
-        this.initTemplate();
-        this.prepend(this.template.content.cloneNode(true));
         this.generateJsonLd(this.workInfo);
-
         this.generateFooter(this.workInfo);
     }
 
@@ -133,7 +120,18 @@ LitmlWork.prototype.initTemplate = function() {
         '   <style> ' +
         'litml-work { display: block;  }' +
         'litml-work ([hidden]) {  display: none;  } ' +
-        '</style><script type="application/ld+json"></script>';
+        ':host([litml-line-type="center"]) {  --litml-indents-num-work: 0; --litml-tabs-num-work: 0;  --litml-text-align-work: center; }' +
+        ':host([litml-line-type="right"]) {  --litml-indents-num-work: 0; --litml-tabs-num-work: 0;  --litml-text-align-work: right; }' +
+        ':host([litml-line-type="noindent"]) {  --litml-indents-num-work: 0; --litml-tabs-num-work: 0;  --litml-text-align-work: left; }' +
+        ':host([litml-line-type="tab"]) {   --litml-tabs-num-work: 1;  --litml-text-align-work: left; }' +
+        ':host([litml-line-type="hanging"]) {   --litml-tabs-num-work: -1;  --litml-text-align-work: left; }' +
+        '</style><slot name="metadata"></slot><slot name="header"></slot><slot></slot><slot name="footer"></slot>';
+
+/*         template.innerHTML =
+        '   <style> ' +
+        'litml-work { display: block;  }' +
+        'litml-work ([hidden]) {  display: none;  } ' +
+        '</style><script type="application/ld+json"></script>'; */
 
 
 /*         template.innerHTML =
@@ -159,15 +157,15 @@ LitmlWork.prototype.generateDefaultHeaderHtml =  function(workInfo) {
 
     if ( workInfo.author || name) {
         if (name) {
-            headerHtml = headerHtml + "<h1>" + name + "</h1>";
+            headerHtml = headerHtml + "<h1 class='litml-work-title'>" + name + "</h1>";
         }
 
         if (workInfo.subtitle) {
-            headerHtml = headerHtml + "<h3>" + workInfo.subtitle + "</h3>";
+            headerHtml = headerHtml + "<h3 class='litml-work-subtitle'>" + workInfo.subtitle + "</h3>";
         }
 
         if (workInfo.authorName) {
-            headerHtml = headerHtml + "<h2>" + workInfo.authorName + "</h2>";
+            headerHtml = headerHtml + "<h2 class='litml-work-author'>" + workInfo.authorName + "</h2>";
         }
     }
 
@@ -184,6 +182,37 @@ LitmlWork.prototype.generateDefaultFooterHtml =  function(workInfo) {
 
     return footerHtml;
 };
+
+LitmlWork.prototype.generateDefaultJsonLd = function(workInfo) {
+    var jsonLDTxt;
+
+    if (workInfo.workType == 'story') {
+        jsonLDTxt = jsonLDTxt + '"@type": "ShortStory"' ;                         
+    }
+    else {
+        jsonLDTxt = jsonLDTxt + '  "@type": "CreativeWork"' ;
+        if (workInfo.workType == 'poem' ) {
+            jsonLDTxt = jsonLDTxt + ', "genre": "poem" ';
+        }
+    }
+    
+    if (workInfo.title) {
+        jsonLDTxt = jsonLDTxt + ', "name": "' + workInfo.title + '"';
+    }      
+        
+    if (workInfo.subtitle) {
+        jsonLDTxt = jsonLDTxt + ', "alternativeHeadline": "' + workInfo.subtitle + '"';
+    }      
+        
+    if (workInfo.authorName) {
+        jsonLDTxt = jsonLDTxt + ', "author": {' +
+        '    "@type": "Person",' +
+        '   "name": "' + workInfo.authorName + '"' +
+        '} }';
+    }
+
+    return jsonLDTxt;
+}
 
 
 LitmlWork.register = function(publisherInfo, publisherTemplates) {
